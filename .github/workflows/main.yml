@@ -1,0 +1,26 @@
+name: Release Workflow
+
+on:
+  create:
+    tags:
+      - '*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+
+    - name: Create Release
+      run: |
+        tag=$(git describe --tags --abbrev=0)
+        git checkout $tag
+        mvn clean install
