@@ -1,4 +1,4 @@
-name: Automated Release
+name: Debug Release Workflow
 
 on:
   push:
@@ -15,20 +15,16 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '17'
+    - name: Debug GitHub Token Permissions
+      run: echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
 
-    - name: Build and Test with Maven
-      run: mvn clean install
+    - name: List Files
+      run: ls -R
 
     - name: Create Release on GitHub
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         tag=$(echo "${{ github.ref }}" | sed -n 's|^refs/tags/||p')
         git checkout "${{ github.sha }}"
-        mvn clean install
         echo "Creating release $tag..."
-        gh release create $tag ./target/* --notes "Release notes for $tag" -t "Release $tag"
+        gh release create $tag ./ -t "Release $tag"
