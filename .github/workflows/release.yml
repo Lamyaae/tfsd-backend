@@ -3,22 +3,30 @@ name: Automated Release
 on:
   push:
     tags:
-      - v*
-
-permissions:
-  contents: write
+      - 'v*'  # Trigger on tags starting with 'v'
 
 jobs:
-  release:
-    name: Release pushed tag
+  create-release:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.TFSD_PAT }}
-          tag: ${{ github.ref_name }}
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}  # Check out the specific tag
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build and Test with Maven
+        run: mvn clean install
+
+      - name: Create Release on GitHub
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
-          gh release create "$tag" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
-              --generate-notes
+          tag=$(echo "${{ github.ref }}" | sed -n 's|^refs/tags/||p')
+          echo "Creating release $tag..."
+          gh release create "$tag" ./target/* --notes "Release notes for $tag"
