@@ -10,25 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Set up JDK
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '17'
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
 
-    - name: Build and Test with Maven
-      run: mvn clean install
+      - name: Build and Test with Maven
+        run: mvn clean install
 
-    - name: Create Release on GitHub
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        tag=$(echo "${{ github.ref }}" | sed -n 's|^refs/tags/||p')
-        git checkout "${{ github.sha }}"
-        mvn clean install
-        echo "Creating release $tag..."
-        GITHUB_TOKEN="${{ secrets.MY_CUSTOM_PAT }}" gh release create $tag ./target/* --notes "Release notes for $tag" -t "Release $tag"
+      - name: Create Release on GitHub
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          tag=$(echo "${{ github.ref }}" | sed -n 's|^refs/tags/||p')
+          git checkout "${{ github.sha }}"
+          mvn clean install
+          echo "Creating release $tag..."
+          echo "MY_CUSTOM_PAT=${{ secrets.TFSD_PAT }}" > ~/.github_token
+          gh release create $tag ./target/* --notes "Release notes for $tag" -t "Release $tag" --title "$tag" --token "$(cat ~/.github_token)"
