@@ -29,4 +29,4 @@ jobs:
         run: |
           tag=$(echo "${{ github.ref }}" | sed -n 's|^refs/tags/||p')
           echo "Creating release $tag..."
-          gh release create "$tag" ./target/* --notes "Release notes for $tag"
+          gh release create $tag --repo="Lamyaae/tfsd-backend" --title="YourRepository $tag" --generate-notes
