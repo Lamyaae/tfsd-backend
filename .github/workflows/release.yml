@@ -31,4 +31,4 @@ jobs:
         git checkout "${{ github.sha }}"
         mvn clean install
         echo "Creating release $tag..."
-        gh release create $tag ./target/* --notes "Release notes for $tag"
+        gh release create $tag ./target/* --notes "Release notes for $tag" -t "Release $tag"
