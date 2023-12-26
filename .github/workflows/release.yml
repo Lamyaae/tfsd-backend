@@ -25,12 +25,10 @@ jobs:
       run: mvn clean install
 
     - name: Create Release on GitHub
-      if: startsWith(github.event_name, 'push tag-')
+      if: startsWith(github.ref, 'refs/tags/')
       run: |
         tag=$(echo "${{ github.ref }}" | sed -n 's|^refs/tags/||p')
-        echo "Tag: $tag"
         git checkout "${{ github.sha }}"
-        echo "Git HEAD: $(git rev-parse HEAD)"
         mvn clean install
         echo "Creating release $tag..."
         gh release create $tag ./target/* --notes "Release notes for $tag"
