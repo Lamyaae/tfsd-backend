@@ -1,0 +1,35 @@
+name: Automated Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+
+    - name: Build and Test with Maven
+      run: mvn clean install
+
+    - name: Create Release on GitHub
+      if: startsWith(github.event_name, 'push tag-')
+      run: |
+        tag=$(echo "${{ github.ref }}" | sed -n 's|^refs/tags/||p')
+        git checkout "${{ github.sha }}"
+        mvn clean install
+        echo "Creating release $tag..."
+        gh release create $tag ./target/* --notes "Release notes for $tag"
+
