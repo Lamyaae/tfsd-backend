@@ -1,37 +1,13 @@
-name: Changelogs
-
+name: Changelog
 on:
-  push:
-    tags:
-      - '*'
-
+  release:
+    types:
+      - created
 jobs:
-  build:
+  changelog:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Generate Changelog
-        run: |
-          # Get the latest tag
-          latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-
-          # Generate the changelog
-          git log ${latestTag}..HEAD --pretty=format:"- %s" > CHANGELOG.md
-
-          # Commit the changelog
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add CHANGELOG.md
-          git commit -m "Update Changelog for release ${{ github.ref }}"
-          git push
-
-      - name: Create Release on GitHub
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: ncipollo/release-action@v1
+      - name: "✏️ Generate release changelog"
+        uses: heinrichreimer/action-github-changelog-generator@v2.3
         with:
-          artifacts: "release.tar.gz,CHANGELOG.md"
-
+          token: ${{ secrets.TFSD_PAT }} 
