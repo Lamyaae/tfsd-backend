@@ -41,10 +41,11 @@ jobs:
           git add CHANGELOG.md
           git commit -m "Update Changelog for release ${{ github.event.release.tag_name }}"
 
+      - name: Pull Changes from Master
+        run: git pull origin master
+
       - name: Push Changes to Master
         uses: ad-m/github-push-action@master
         with:
           branch: master
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
