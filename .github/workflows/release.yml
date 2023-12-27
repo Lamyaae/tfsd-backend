@@ -25,7 +25,7 @@ jobs:
         run: mvn clean install
 
       - name: Authenticate with GitHub CLI
-        run: gh auth login --with-token "${{ secrets.TFSD_PAT }}"
+        run: gh auth login --with-token "${{ secrets.tfsd-token }}"
 
       - name: Create Release on GitHub
         if: startsWith(github.ref, 'refs/tags/')
