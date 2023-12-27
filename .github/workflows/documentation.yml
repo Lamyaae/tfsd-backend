@@ -1,0 +1,24 @@
+name: Update Documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Copy Documentation Files
+        run: |
+          cp README.md $GITHUB_WORKSPACE/docs/
+          cp CHANGELOG.md $GITHUB_WORKSPACE/docs/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.TFSD_PAT }}
+          publish_dir: ./docs
