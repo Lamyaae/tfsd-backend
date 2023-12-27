@@ -1,16 +1,24 @@
 # Changelog
 
+## [v1.19](https://github.com/Lamyaae/tfsd-backend/tree/v1.19) (2023-12-27)
+
+[Full Changelog](https://github.com/Lamyaae/tfsd-backend/compare/v1.18...v1.19)
+
+## [v1.18](https://github.com/Lamyaae/tfsd-backend/tree/v1.18) (2023-12-27)
+
+[Full Changelog](https://github.com/Lamyaae/tfsd-backend/compare/v1.17...v1.18)
+
 ## [v1.17](https://github.com/Lamyaae/tfsd-backend/tree/v1.17) (2023-12-27)
 
-[Full Changelog](https://github.com/Lamyaae/tfsd-backend/compare/v1.16...v1.17)
-
-## [v1.16](https://github.com/Lamyaae/tfsd-backend/tree/v1.16) (2023-12-27)
-
-[Full Changelog](https://github.com/Lamyaae/tfsd-backend/compare/v1.15...v1.16)
+[Full Changelog](https://github.com/Lamyaae/tfsd-backend/compare/v1.15...v1.17)
 
 ## [v1.15](https://github.com/Lamyaae/tfsd-backend/tree/v1.15) (2023-12-27)
 
-[Full Changelog](https://github.com/Lamyaae/tfsd-backend/compare/v1.14...v1.15)
+[Full Changelog](https://github.com/Lamyaae/tfsd-backend/compare/v1.16...v1.15)
+
+## [v1.16](https://github.com/Lamyaae/tfsd-backend/tree/v1.16) (2023-12-27)
+
+[Full Changelog](https://github.com/Lamyaae/tfsd-backend/compare/v1.14...v1.16)
 
 ## [v1.14](https://github.com/Lamyaae/tfsd-backend/tree/v1.14) (2023-12-27)
 
