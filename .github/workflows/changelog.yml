@@ -1,4 +1,4 @@
-name: ChangeLogs
+name: Changelogs
 
 on:
   push:
@@ -9,36 +9,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-
+      contents: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '17'
-
-      - name: Build and Test with Maven
-        run: mvn clean install
-
-      - name: Update Changelog
+      - name: Generate Changelog
         run: |
-          latestTag=$(git describe --tags $(git rev-list --tags --max-count=1))
+          # Get the latest tag
+          latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+
+          # Generate the changelog
           git log ${latestTag}..HEAD --pretty=format:"- %s" > CHANGELOG.md
 
-      - name: Commit Changelog
-        run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          # Commit the changelog
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
           git add CHANGELOG.md
           git commit -m "Update Changelog for release ${{ github.ref }}"
+          git push
 
-      - name: Push Changelog
-        run: |
-          git push origin HEAD:${{ github.ref }}
-          gh release create ${{ github.ref }} ./target/* --notes "Release notes for ${{ github.ref }}"
-        env:
-          TFSD_TOKEN: ${{ secrets.TFSD_PAT }}
+      - name: Create Release on GitHub
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "release.tar.gz,CHANGELOG.md"
+
