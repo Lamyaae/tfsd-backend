@@ -17,8 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "✏️ Generate release changelog"
-        uses: skywinder/gitlab-changelog-generator@v1.15.0
+        uses: heinrichreimer/action-github-changelog-generator@v2.3
         with:
           token: ${{ secrets.TFSD_PAT }} 
+          output: CHANGELOG.md
 
 
