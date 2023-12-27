@@ -1,4 +1,4 @@
-name: Releases
+name: ChangeLogs
 
 on:
   push:
@@ -29,10 +29,16 @@ jobs:
           latestTag=$(git describe --tags $(git rev-list --tags --max-count=1))
           git log ${latestTag}..HEAD --pretty=format:"- %s" > CHANGELOG.md
 
-      - name: Commit and Push Changelog
+      - name: Commit Changelog
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add CHANGELOG.md
           git commit -m "Update Changelog for release ${{ github.ref }}"
+
+      - name: Push Changelog
+        run: |
           git push origin HEAD:${{ github.ref }}
+          gh release create ${{ github.ref }} ./target/* --notes "Release notes for ${{ github.ref }}"
+        env:
+          TFSD_TOKEN: ${{ secrets.tfsd-token }}
