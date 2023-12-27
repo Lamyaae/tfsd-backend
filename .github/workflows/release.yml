@@ -45,4 +45,7 @@ jobs:
         run: git pull origin master
 
       - name: Push Changes to Master
-        run: git push -u origin master
+        uses: ad-m/github-push-action@master
+        with:
+          branch: master
+          github_token: ${{ secrets.GITHUB_TOKEN }}
