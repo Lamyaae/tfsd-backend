@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "✏️ Generate release changelog"
-        uses: heinrichreimer/action-github-changelog-generator@v2.3
+        uses: saadmk11/changelog-ci@v1.1.2
         with:
           token: ${{ secrets.TFSD_PAT }} 
 
