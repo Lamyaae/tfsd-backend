@@ -16,10 +16,23 @@ jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
-      - name: "✏️ Generate release changelog"
+      - name: Generate Release Changelog
         uses: heinrichreimer/action-github-changelog-generator@v2.3
         with:
-          token: ${{ secrets.TFSD_PAT }} 
+          token: ${{ secrets.TFSD_PAT }}
           output: CHANGELOG.md
+
+      - name: Commit Changelog
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CHANGELOG.md
+          git commit -m "Update Changelog for release ${{ github.event.release.tag_name }}"
+
+      - name: Push Changes to Master
+        uses: ad-m/github-push-action@master
+        with:
+          branch: master
+          github_token: ${{ secrets.TFSD_PAT }}
 
 
